@@ -1,0 +1,31 @@
+{
+  "format": "vrptw-scenario",
+  "version": 1,
+  "name": "uniform-n20-seed1",
+  "units": {"distance": "km", "time": "min", "speed": "km/h"},
+  "depot": {"x": 25.0, "y": 25.0},
+  "fleet": {"vehicles": 7, "capacity": 60, "speed": 40.0, "shift_length": 480},
+  "generator": {"customers": 20, "layout": "uniform", "seed": 1, "area": 50.0, "depot": "center", "demand": [1, 10], "service": [5, 15], "window": [60, 180], "capacity": 60, "speed": 40.0, "shift_length": 480, "vehicles": 7},
+  "customers": [
+    {"id": 1, "x": 6.72, "y": 42.37, "demand": 5, "ready": 92, "due": 248, "service": 6},
+    {"id": 2, "x": 38.19, "y": 12.75, "demand": 9, "ready": 308, "due": 433, "service": 11},
+    {"id": 3, "x": 24.77, "y": 22.47, "demand": 4, "ready": 228, "due": 325, "service": 9},
+    {"id": 4, "x": 32.58, "y": 39.44, "demand": 8, "ready": 215, "due": 326, "service": 13},
+    {"id": 5, "x": 4.69, "y": 1.42, "demand": 1, "ready": 279, "due": 371, "service": 12},
+    {"id": 6, "x": 41.79, "y": 21.64, "demand": 7, "ready": 25, "due": 171, "service": 11},
+    {"id": 7, "x": 38.11, "y": 0.11, "demand": 9, "ready": 108, "due": 263, "service": 15},
+    {"id": 8, "x": 22.27, "y": 36.08, "demand": 8, "ready": 1, "due": 127, "service": 15},
+    {"id": 9, "x": 11.44, "y": 47.26, "demand": 3, "ready": 108, "due": 276, "service": 13},
+    {"id": 10, "x": 45.07, "y": 1.53, "demand": 8, "ready": 3, "due": 124, "service": 5},
+    {"id": 11, "x": 1.27, "y": 27.07, "demand": 10, "ready": 124, "due": 259, "service": 14},
+    {"id": 12, "x": 46.96, "y": 19.06, "demand": 3, "ready": 64, "due": 189, "service": 7},
+    {"id": 13, "x": 10.83, "y": 21.11, "demand": 1, "ready": 350, "due": 449, "service": 8},
+    {"id": 14, "x": 1.45, "y": 11.08, "demand": 9, "ready": 185, "due": 297, "service": 8},
+    {"id": 15, "x": 21.89, "y": 24.79, "demand": 10, "ready": 364, "due": 465, "service": 10},
+    {"id": 16, "x": 11.65, "y": 11.54, "demand": 9, "ready": 0, "due": 108, "service": 14},
+    {"id": 17, "x": 10.94, "y": 22.98, "demand": 9, "ready": 292, "due": 419, "service": 7},
+    {"id": 18, "x": 14.49, "y": 1.07, "demand": 4, "ready": 193, "due": 261, "service": 11},
+    {"id": 19, "x": 41.88, "y": 27.82, "demand": 6, "ready": 43, "due": 174, "service": 14},
+    {"id": 20, "x": 32.11, "y": 9.3, "demand": 9, "ready": 304, "due": 427, "service": 11}
+  ]
+}

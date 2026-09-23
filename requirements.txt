@@ -1,0 +1,2 @@
+# No third-party packages are needed: the code imports only the Python
+# standard library. Written for Python 3.10 or newer; tested with Python 3.12.3.
