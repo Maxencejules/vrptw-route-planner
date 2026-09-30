@@ -1,0 +1,7 @@
+solver,nn_metric,improved,seed,max_moves,feasible,vehicles_used,total_distance,runtime_seconds,peak_python_bytes
+nearest,time,False,,,True,10,855.0654433965706,2.225410700077191,693664
+nearest,time,True,,1000,True,10,828.936866942834,2.823720099986531,690600
+nearest,distance,False,,,True,20,1628.4300911654595,2.675091400044039,690984
+nearest,distance,True,,1000,True,12,938.4230317435047,31.226222099969164,690976
+savings,,False,,,True,12,930.1213683043276,7.341656300006434,1688216
+savings,,True,,1000,True,12,897.2676278377068,7.3333619000623,1560464

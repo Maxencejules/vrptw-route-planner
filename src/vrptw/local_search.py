@@ -57,10 +57,16 @@ def improve(
     neighbourhoods only guarantee feasibility when they start from it.
     """
     work = [list(r) for r in routes if r]
+    if isinstance(max_moves, bool) or not isinstance(max_moves, int) or max_moves < 0:
+        raise ValueError("max_moves must be a non-negative integer")
     for pos, r in enumerate(work, 1):
         if not inst.route_feasible(r):
             raise ValueError(f"route {pos} is infeasible; local search needs feasible routes")
     stats = SearchStats(start_distance=inst.total_distance(work))
+    if max_moves == 0:
+        stats.end_distance = stats.start_distance
+        stats.stopped_early = True
+        return work, stats
     loads = [inst.route_load(r) for r in work]
     neighbourhoods = (
         ("2-opt", _two_opt),

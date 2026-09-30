@@ -154,7 +154,7 @@ def evaluate(scenario: Scenario, solution: Solution, inst: Instance | None = Non
         vehicle += 1
         nodes = []
         for cid in route:
-            node = inst.node_of.get(cid)
+            node = inst.node_of.get(cid) if isinstance(cid, int) and not isinstance(cid, bool) else None
             if node is None:
                 violations.append(f"vehicle {vehicle}: unknown customer id {cid}")
                 continue

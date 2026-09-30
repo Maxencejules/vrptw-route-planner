@@ -1,0 +1,2 @@
+# Verbatim vendor line endings/padding; the fixture SHA256 is tested.
+benchmarks/c101.txt -text whitespace=-blank-at-eol

@@ -10,7 +10,7 @@ from __future__ import annotations
 import math
 from typing import Sequence
 
-from .model import Scenario
+from .model import Scenario, ScenarioError
 
 # Tolerance for comparing times and loads that come out of float arithmetic.
 EPS = 1e-6
@@ -51,6 +51,8 @@ class Instance:
         self.travel: list[list[float]] = [
             [d * minutes_per_km for d in row] for row in self.dist
         ]
+        if any(not math.isfinite(v) for matrix in (self.dist, self.travel) for row in matrix for v in row):
+            raise ScenarioError("coordinates and speed produce non-finite distances or travel times")
 
     # ----------------------------------------------------------- routes
     def route_load(self, route: Sequence[int]) -> float:

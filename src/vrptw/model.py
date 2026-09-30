@@ -226,19 +226,31 @@ def _number(raw: Mapping[str, Any], key: str, where: str, default: Any = _MISSIN
     value = raw.get(key, default)
     if value is _MISSING:
         raise ScenarioError(f"{where}.{key} is missing")
+    return _finite_number(value, f"{where}.{key}")
+
+
+def _finite_number(value: Any, where: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ScenarioError(f"{where}.{key} must be a number")
+        raise ScenarioError(f"{where} must be a number")
     try:
         finite = math.isfinite(value)
     except OverflowError:  # an int too large to convert to float
         finite = False
     if not finite:
-        raise ScenarioError(f"{where}.{key} must be finite")
+        raise ScenarioError(f"{where} must be finite")
     return value
 
 
 def _validate(s: Scenario) -> None:
     f = s.fleet
+    if not isinstance(s.name, str):
+        raise ScenarioError("name must be a string")
+    if isinstance(f.vehicles, bool) or not isinstance(f.vehicles, int):
+        raise ScenarioError("fleet.vehicles must be an integer")
+    for name in ("x", "y"):
+        _finite_number(getattr(s.depot, name), f"depot.{name}")
+    for name in ("capacity", "speed", "shift_length"):
+        _finite_number(getattr(f, name), f"fleet.{name}")
     if f.vehicles < 1:
         raise ScenarioError("fleet.vehicles must be at least 1")
     if f.capacity <= 0:
@@ -249,8 +261,10 @@ def _validate(s: Scenario) -> None:
         raise ScenarioError("fleet.shift_length must be positive")
     seen: set[int] = set()
     for c in s.customers:
-        if c.id < 1:
+        if isinstance(c.id, bool) or not isinstance(c.id, int) or c.id < 1:
             raise ScenarioError(f"customer id {c.id} must be a positive integer")
+        for name in ("x", "y", "demand", "ready", "due", "service"):
+            _finite_number(getattr(c, name), f"customer {c.id}.{name}")
         if c.id in seen:
             raise ScenarioError(f"duplicate customer id {c.id}")
         seen.add(c.id)

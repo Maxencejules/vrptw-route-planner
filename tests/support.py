@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import os
 import sys
-from itertools import permutations, product
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "src")
@@ -17,6 +16,7 @@ if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
 from vrptw import Customer, Depot, Fleet, Instance, Scenario  # noqa: E402
+from vrptw.validation import exhaustive_tiny  # noqa: E402
 
 
 def make_scenario(
@@ -66,24 +66,4 @@ def brute_force_optimum(scenario):
     possible way; plans with more routes than vehicles or an infeasible
     route are skipped. Returns ``None`` if no plan is feasible.
     """
-    inst = Instance(scenario)
-    nodes = list(range(1, inst.size))
-    best = None
-    for order in permutations(nodes):
-        for cuts in product((False, True), repeat=len(order) - 1):
-            routes, current = [], [order[0]]
-            for node, cut in zip(order[1:], cuts):
-                if cut:
-                    routes.append(current)
-                    current = [node]
-                else:
-                    current.append(node)
-            routes.append(current)
-            if len(routes) > inst.vehicles:
-                continue
-            if not all(inst.route_feasible(r) for r in routes):
-                continue
-            total = inst.total_distance(routes)
-            if best is None or total < best:
-                best = total
-    return best
+    return exhaustive_tiny(scenario).distance
