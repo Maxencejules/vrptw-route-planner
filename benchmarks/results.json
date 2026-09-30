@@ -1,0 +1,1041 @@
+{
+  "format": "vrptw-benchmark-v1",
+  "environment": {
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "os": "Windows",
+    "os_release": "11",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 158 Stepping 9, GenuineIntel"
+  },
+  "measurement": "single run per variant; perf_counter with tracemalloc enabled; Python allocation peak, not RSS",
+  "solver_objective": "total distance only, subject to fleet size and hard constraints",
+  "instance_sha256": "a6da75152d182d60ecd2c6f854296f5be452f92282d096adebcf5d99a7f16516",
+  "reference": {
+    "instance": "C101",
+    "customers": 100,
+    "instance_source": "https://www.sintef.no/globalassets/project/top/vrptw/solomon/solomon-100.zip",
+    "archive_member": "In/c101.txt",
+    "archive_sha256": "8a0a72cbe6b7f8f9988ace4ebde0378ec34943acaaac47f2c408915e41887747",
+    "instance_sha256": "a6da75152d182d60ecd2c6f854296f5be452f92282d096adebcf5d99a7f16516",
+    "retrieved": "2026-09-29",
+    "reference_source": "https://www.sintef.no/projectweb/top/vrptw/100-customers/",
+    "routes_source": "https://www.sintef.no/contentassets/adf48e65e3a84dd6871eb7586707675d/c101.txt",
+    "reference_objective": "lexicographic: vehicles first, then total Euclidean distance",
+    "distance_convention": "double precision; no per-edge rounding; final display rounded to two decimals",
+    "reference_kind": "published best known, not an optimality certificate",
+    "vehicles": 10,
+    "distance": 828.94,
+    "routes": [
+      [
+        81,
+        78,
+        76,
+        71,
+        70,
+        73,
+        77,
+        79,
+        80
+      ],
+      [
+        57,
+        55,
+        54,
+        53,
+        56,
+        58,
+        60,
+        59
+      ],
+      [
+        98,
+        96,
+        95,
+        94,
+        92,
+        93,
+        97,
+        100,
+        99
+      ],
+      [
+        32,
+        33,
+        31,
+        35,
+        37,
+        38,
+        39,
+        36,
+        34
+      ],
+      [
+        13,
+        17,
+        18,
+        19,
+        15,
+        16,
+        14,
+        12
+      ],
+      [
+        90,
+        87,
+        86,
+        83,
+        82,
+        84,
+        85,
+        88,
+        89,
+        91
+      ],
+      [
+        43,
+        42,
+        41,
+        40,
+        44,
+        46,
+        45,
+        48,
+        51,
+        50,
+        52,
+        49,
+        47
+      ],
+      [
+        67,
+        65,
+        63,
+        62,
+        74,
+        72,
+        61,
+        64,
+        68,
+        66,
+        69
+      ],
+      [
+        5,
+        3,
+        7,
+        8,
+        10,
+        11,
+        9,
+        6,
+        4,
+        2,
+        1,
+        75
+      ],
+      [
+        20,
+        24,
+        25,
+        27,
+        29,
+        30,
+        28,
+        26,
+        23,
+        22,
+        21
+      ]
+    ]
+  },
+  "reference_audit": {
+    "feasible": true,
+    "violations": [],
+    "total_distance": 828.936866942834,
+    "vehicles_used": 10
+  },
+  "runs": [
+    {
+      "solver": "nearest",
+      "nn_metric": "time",
+      "improved": false,
+      "seed": null,
+      "max_moves": null,
+      "search": {},
+      "runtime_seconds": 2.225410700077191,
+      "peak_python_bytes": 693664,
+      "feasible": true,
+      "violations": [],
+      "total_distance": 855.0654433965706,
+      "vehicles_used": 10,
+      "routes": [
+        [
+          20,
+          24,
+          25,
+          27,
+          29,
+          30,
+          28,
+          26,
+          23,
+          22,
+          21,
+          49
+        ],
+        [
+          67,
+          65,
+          63,
+          62,
+          74,
+          72,
+          61,
+          64,
+          68,
+          66,
+          69
+        ],
+        [
+          5,
+          3,
+          7,
+          8,
+          10,
+          11,
+          9,
+          6,
+          4,
+          2,
+          1,
+          75
+        ],
+        [
+          43,
+          42,
+          41,
+          40,
+          44,
+          46,
+          45,
+          48,
+          51,
+          50,
+          52,
+          47
+        ],
+        [
+          90,
+          87,
+          86,
+          83,
+          82,
+          84,
+          85,
+          88,
+          89,
+          91
+        ],
+        [
+          98,
+          96,
+          95,
+          94,
+          92,
+          93,
+          97,
+          100,
+          99
+        ],
+        [
+          13,
+          17,
+          18,
+          19,
+          15,
+          16,
+          14,
+          12
+        ],
+        [
+          32,
+          33,
+          31,
+          35,
+          37,
+          38,
+          39,
+          36,
+          34
+        ],
+        [
+          57,
+          55,
+          54,
+          53,
+          56,
+          58,
+          60,
+          59
+        ],
+        [
+          81,
+          78,
+          76,
+          71,
+          70,
+          73,
+          77,
+          79,
+          80
+        ]
+      ],
+      "unassigned": []
+    },
+    {
+      "solver": "nearest",
+      "nn_metric": "time",
+      "improved": true,
+      "seed": null,
+      "max_moves": 1000,
+      "search": {
+        "start_distance": 855.065,
+        "end_distance": 828.937,
+        "moves": {
+          "2-opt": 0,
+          "relocate": 1,
+          "exchange": 0
+        },
+        "stopped_early": false
+      },
+      "runtime_seconds": 2.823720099986531,
+      "peak_python_bytes": 690600,
+      "feasible": true,
+      "violations": [],
+      "total_distance": 828.936866942834,
+      "vehicles_used": 10,
+      "routes": [
+        [
+          20,
+          24,
+          25,
+          27,
+          29,
+          30,
+          28,
+          26,
+          23,
+          22,
+          21
+        ],
+        [
+          67,
+          65,
+          63,
+          62,
+          74,
+          72,
+          61,
+          64,
+          68,
+          66,
+          69
+        ],
+        [
+          5,
+          3,
+          7,
+          8,
+          10,
+          11,
+          9,
+          6,
+          4,
+          2,
+          1,
+          75
+        ],
+        [
+          43,
+          42,
+          41,
+          40,
+          44,
+          46,
+          45,
+          48,
+          51,
+          50,
+          52,
+          49,
+          47
+        ],
+        [
+          90,
+          87,
+          86,
+          83,
+          82,
+          84,
+          85,
+          88,
+          89,
+          91
+        ],
+        [
+          98,
+          96,
+          95,
+          94,
+          92,
+          93,
+          97,
+          100,
+          99
+        ],
+        [
+          13,
+          17,
+          18,
+          19,
+          15,
+          16,
+          14,
+          12
+        ],
+        [
+          32,
+          33,
+          31,
+          35,
+          37,
+          38,
+          39,
+          36,
+          34
+        ],
+        [
+          57,
+          55,
+          54,
+          53,
+          56,
+          58,
+          60,
+          59
+        ],
+        [
+          81,
+          78,
+          76,
+          71,
+          70,
+          73,
+          77,
+          79,
+          80
+        ]
+      ],
+      "unassigned": []
+    },
+    {
+      "solver": "nearest",
+      "nn_metric": "distance",
+      "improved": false,
+      "seed": null,
+      "max_moves": null,
+      "search": {},
+      "runtime_seconds": 2.675091400044039,
+      "peak_python_bytes": 690984,
+      "feasible": true,
+      "violations": [],
+      "total_distance": 1628.4300911654595,
+      "vehicles_used": 20,
+      "routes": [
+        [
+          20,
+          21,
+          47
+        ],
+        [
+          22,
+          49
+        ],
+        [
+          67,
+          65,
+          63,
+          62,
+          74,
+          72,
+          61,
+          64,
+          68,
+          69
+        ],
+        [
+          23,
+          75
+        ],
+        [
+          24,
+          25,
+          27,
+          28,
+          26,
+          34,
+          52
+        ],
+        [
+          5,
+          3,
+          7,
+          8,
+          9,
+          6,
+          4,
+          1
+        ],
+        [
+          43,
+          42,
+          41,
+          40,
+          44,
+          45,
+          48,
+          50
+        ],
+        [
+          66
+        ],
+        [
+          10,
+          11,
+          2
+        ],
+        [
+          29,
+          30,
+          36,
+          51
+        ],
+        [
+          46,
+          59,
+          80
+        ],
+        [
+          90,
+          89,
+          91
+        ],
+        [
+          87,
+          86,
+          84,
+          85,
+          88,
+          99
+        ],
+        [
+          98,
+          96,
+          95,
+          94,
+          93,
+          97,
+          100
+        ],
+        [
+          13,
+          17,
+          18,
+          19,
+          15,
+          16,
+          14,
+          12
+        ],
+        [
+          32,
+          33,
+          31,
+          35,
+          37,
+          38,
+          39
+        ],
+        [
+          83,
+          82,
+          79
+        ],
+        [
+          57,
+          55,
+          54,
+          53,
+          56,
+          58,
+          60
+        ],
+        [
+          92,
+          77
+        ],
+        [
+          81,
+          78,
+          76,
+          71,
+          70,
+          73
+        ]
+      ],
+      "unassigned": []
+    },
+    {
+      "solver": "nearest",
+      "nn_metric": "distance",
+      "improved": true,
+      "seed": null,
+      "max_moves": 1000,
+      "search": {
+        "start_distance": 1628.43,
+        "end_distance": 938.423,
+        "moves": {
+          "2-opt": 0,
+          "relocate": 104,
+          "exchange": 1
+        },
+        "stopped_early": false
+      },
+      "runtime_seconds": 31.226222099969164,
+      "peak_python_bytes": 690976,
+      "feasible": true,
+      "violations": [],
+      "total_distance": 938.4230317435047,
+      "vehicles_used": 12,
+      "routes": [
+        [
+          67,
+          65,
+          63,
+          62,
+          74,
+          72,
+          61,
+          64,
+          68,
+          66,
+          69
+        ],
+        [
+          20,
+          24,
+          25,
+          27,
+          29,
+          30,
+          28,
+          26,
+          23,
+          22,
+          21
+        ],
+        [
+          43,
+          42,
+          41,
+          40,
+          44,
+          46,
+          45,
+          48,
+          51,
+          50,
+          52,
+          49,
+          47
+        ],
+        [
+          7,
+          8,
+          10,
+          11,
+          9,
+          6,
+          4
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          96,
+          94,
+          92,
+          93,
+          97,
+          100,
+          99,
+          2,
+          1,
+          75
+        ],
+        [
+          13,
+          17,
+          18,
+          19,
+          15,
+          16,
+          14,
+          12
+        ],
+        [
+          32,
+          33,
+          31,
+          35,
+          37,
+          38,
+          39,
+          36,
+          34
+        ],
+        [
+          90,
+          87,
+          86
+        ],
+        [
+          57,
+          55,
+          54,
+          53,
+          56,
+          58,
+          60,
+          59
+        ],
+        [
+          98,
+          95,
+          83,
+          82,
+          84,
+          85,
+          88,
+          89,
+          91
+        ],
+        [
+          81,
+          78,
+          76,
+          71,
+          70,
+          73,
+          77,
+          79,
+          80
+        ]
+      ],
+      "unassigned": []
+    },
+    {
+      "solver": "savings",
+      "nn_metric": null,
+      "improved": false,
+      "seed": null,
+      "max_moves": null,
+      "search": {},
+      "runtime_seconds": 7.341656300006434,
+      "peak_python_bytes": 1688216,
+      "feasible": true,
+      "violations": [],
+      "total_distance": 930.1213683043276,
+      "vehicles_used": 12,
+      "routes": [
+        [
+          13,
+          15,
+          11,
+          9,
+          6,
+          4,
+          2,
+          1,
+          75
+        ],
+        [
+          5,
+          3,
+          7,
+          8,
+          10
+        ],
+        [
+          17,
+          18,
+          19,
+          16,
+          14,
+          12
+        ],
+        [
+          20,
+          24,
+          25,
+          27,
+          29,
+          30,
+          28,
+          26,
+          23,
+          22,
+          21
+        ],
+        [
+          32,
+          33,
+          31,
+          35,
+          37,
+          38,
+          39,
+          36,
+          34
+        ],
+        [
+          43,
+          42,
+          46,
+          47
+        ],
+        [
+          41,
+          40,
+          44,
+          45,
+          48,
+          51,
+          50,
+          52,
+          49
+        ],
+        [
+          57,
+          55,
+          54,
+          53,
+          56,
+          58,
+          60,
+          59
+        ],
+        [
+          67,
+          65,
+          63,
+          62,
+          74,
+          72,
+          61,
+          64,
+          68,
+          66,
+          69
+        ],
+        [
+          81,
+          78,
+          76,
+          71,
+          70,
+          73,
+          77,
+          79,
+          80
+        ],
+        [
+          90,
+          87,
+          86,
+          83,
+          82,
+          84,
+          85,
+          88,
+          89,
+          91
+        ],
+        [
+          98,
+          96,
+          95,
+          94,
+          92,
+          93,
+          97,
+          100,
+          99
+        ]
+      ],
+      "unassigned": []
+    },
+    {
+      "solver": "savings",
+      "nn_metric": null,
+      "improved": true,
+      "seed": null,
+      "max_moves": 1000,
+      "search": {
+        "start_distance": 930.121,
+        "end_distance": 897.268,
+        "moves": {
+          "2-opt": 0,
+          "relocate": 3,
+          "exchange": 0
+        },
+        "stopped_early": false
+      },
+      "runtime_seconds": 7.3333619000623,
+      "peak_python_bytes": 1560464,
+      "feasible": true,
+      "violations": [],
+      "total_distance": 897.2676278377068,
+      "vehicles_used": 12,
+      "routes": [
+        [
+          10,
+          11,
+          9,
+          6,
+          4,
+          2,
+          1,
+          75
+        ],
+        [
+          5,
+          3,
+          7,
+          8
+        ],
+        [
+          13,
+          17,
+          18,
+          19,
+          15,
+          16,
+          14,
+          12
+        ],
+        [
+          20,
+          24,
+          25,
+          27,
+          29,
+          30,
+          28,
+          26,
+          23,
+          22,
+          21
+        ],
+        [
+          32,
+          33,
+          31,
+          35,
+          37,
+          38,
+          39,
+          36,
+          34
+        ],
+        [
+          43,
+          42,
+          46,
+          47
+        ],
+        [
+          41,
+          40,
+          44,
+          45,
+          48,
+          51,
+          50,
+          52,
+          49
+        ],
+        [
+          57,
+          55,
+          54,
+          53,
+          56,
+          58,
+          60,
+          59
+        ],
+        [
+          67,
+          65,
+          63,
+          62,
+          74,
+          72,
+          61,
+          64,
+          68,
+          66,
+          69
+        ],
+        [
+          81,
+          78,
+          76,
+          71,
+          70,
+          73,
+          77,
+          79,
+          80
+        ],
+        [
+          90,
+          87,
+          86,
+          83,
+          82,
+          84,
+          85,
+          88,
+          89,
+          91
+        ],
+        [
+          98,
+          96,
+          95,
+          94,
+          92,
+          93,
+          97,
+          100,
+          99
+        ]
+      ],
+      "unassigned": []
+    }
+  ]
+}

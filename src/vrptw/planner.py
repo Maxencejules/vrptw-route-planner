@@ -18,6 +18,7 @@ def solve(
     improve: bool = False,
     nn_metric: str = "time",
     inst: Instance | None = None,
+    max_moves: int = 100_000,
 ) -> Solution:
     """Build a plan for ``scenario``.
 
@@ -38,7 +39,8 @@ def solve(
 
     search: dict = {}
     if improve:
-        routes, stats = improve_routes(inst, routes)
+        routes, stats = improve_routes(inst, routes, max_moves=max_moves)
+        options["max_moves"] = max_moves
         search = stats.to_dict()
 
     return Solution(

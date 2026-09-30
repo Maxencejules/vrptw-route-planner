@@ -29,7 +29,10 @@ Python standard library.
 ## Requirements
 
 - Python 3.10 or newer. The code uses only the standard library.
-- Tested only with Python 3.12.3 on Linux.
+- Verified locally with Python 3.12.10 on Windows: all 85 tests, the offline
+  C101 demo and the standalone solver/audit smoke pass.
+- CI is configured for Python 3.12 on Ubuntu and Windows; remote results
+  are still pending.
 - There are no third-party dependencies, so `requirements.txt` holds only a
   comment.
 - Nothing needs installing. Run the commands below from the repository root
@@ -298,6 +301,95 @@ command should give the same table. Every plan listed was feasible.
 These are heuristic results. They say nothing about how far the plans are
 from optimal.
 
+## Independent validation
+
+The normal `vrptw check` command shares the solver's numeric instance and
+timeline machinery. For a separate check of coverage, fleet size, capacity,
+service-start windows, depot return and objective value, use:
+
+```
+python scripts/validate_solution.py --scenario examples/uniform-20.json --solution out/plan.json
+```
+
+This reads the raw customer coordinates and constraints, reconstructs the
+earliest schedule from departure time zero, and recomputes Euclidean distance.
+It never calls `Instance`, the solvers, `evaluate` or timeline helpers. Waiting
+is allowed, so a later departure cannot rescue an earliest schedule that
+already misses a due time or depot return. Empty routes consume no vehicles.
+It accepts routes-only JSON and optionally checks `summary.total_distance`;
+the tolerance for saved totals is 0.000500001 because solution JSON rounds
+them to three decimals. Time and load comparisons use a fixed 1e-6 tolerance.
+Exit codes are 0 feasible, 1 constraint/objective failure, and 2 malformed
+input. A rejected plan's distance is diagnostic, not a valid solution score.
+
+`vrptw.validation.exhaustive_tiny` enumerates all permutations and route cuts
+for at most six customers using this independent checker, not solver helpers.
+It confirms the hand-computed optima and supplies the tiny-instance lower
+reference in tests. This proves a minimum only within that bounded,
+floating-point model and tolerance. It provides no certificate for C101 or
+other large instances. Tests deliberately sabotage production feasibility
+and distance helpers to verify that the independent reference still works.
+
+Direct `Scenario(...)` construction now rejects non-finite values and invalid
+integer fields just like JSON input. Direct solution ids also require integers,
+so booleans and integral floats cannot silently alias a customer id. Derived
+non-finite distances/travel times are rejected too. `improve(..., max_moves=0)` makes no move; negative and
+non-integer budgets are rejected. `solve(..., improve=True, max_moves=...)`
+records that limit in the solution's options.
+
+## Offline Solomon C101 benchmark
+
+The repository includes the **full 100-customer C101 instance**, not a subset,
+from the [official SINTEF archive](https://www.sintef.no/globalassets/project/top/vrptw/solomon/solomon-100.zip).
+The [provenance record](benchmarks/README.md) gives the original archive/member
+hashes and source links. The demo verifies the fixture hash before solving;
+no network or package installation is required:
+
+```
+python scripts/benchmark.py --out build/benchmark --max-moves 1000
+```
+
+The importer retains full-precision Euclidean distances and numerically equal
+travel times. It embeds benchmark units with speed=60 in the application's
+km/min representation, without asserting a real physical scale. The depot's
+zero ready/service times and due time1236 map to departure from zero and a
+shift ending at1236; unsupported depot conventions are rejected. Customer
+windows constrain service start. Every published reference route is checked
+independently as an importer/precision regression.
+
+One measured run with CPython3.12.10 on Windows11/AMD64 gave:
+
+| solver | local search | feasible | vehicles | distance | seconds | peak Python bytes |
+|---|---|---|---|---|---|---|
+| nearest/time | no | yes | 10 | 855.07 | 2.225 | 693664 |
+| nearest/time | yes | yes | 10 | 828.94 | 2.824 | 690600 |
+| nearest/distance | no | yes | 20 | 1628.43 | 2.675 | 690984 |
+| nearest/distance | yes | yes | 12 | 938.42 | 31.226 | 690976 |
+| savings | no | yes | 12 | 930.12 | 7.342 | 1688216 |
+| savings | yes | yes | 12 | 897.27 | 7.333 | 1560464 |
+
+The [committed JSON](benchmarks/results.json) contains every route, unrounded
+distance, independent violations, vehicle count, search budget/moves, seed,
+runtime, allocation peak and environment; [CSV](benchmarks/results.csv) gives
+the comparison rows. The algorithms are deterministic and do not use a
+random seed/restart (`seed: null`). Tests repeat all six variants and compare
+their routes and unrounded costs. Timing and resource observations vary.
+Each timing includes `tracemalloc` overhead and matrix construction plus
+solving, excluding imports, IO and independent auditing. The memory measure
+is peak traced Python allocations, **not process RSS**. These are single
+observations, not averaged performance claims. The accepted-move budget is
+not a wall-clock deadline.
+
+[SINTEF's full-C101 reference](https://www.sintef.no/projectweb/top/vrptw/100-customers/)
+is 10 vehicles / 828.94 distance under a **vehicles-first, then distance**
+objective and double-precision arithmetic. Our solver's objective remains
+distance only, with fleet size as a constraint. Nearest/time with local
+search matches that published value on this instance; this is a best-known
+reference comparison, **not an optimality proof or optimality gap**. One
+clustered instance cannot establish general route quality. Infeasible runs
+remain in both output files with violations; the demo then exits1. CI runs
+the tests and demo on Ubuntu and Windows with Python3.12 and keeps the reports.
+
 ## Tests
 
 ```
@@ -306,7 +398,7 @@ python3 -m unittest discover -s tests
 
 Run this from the repository root. The test modules add `src/` to the import
 path themselves, and no network access is needed. The latest run reported
-`Ran 68 tests` and `OK`. The tests cover:
+`Ran 85 tests` and `OK`. The tests cover:
 
 - generator determinism for a fixed seed;
 - every solver variant, with and without local search, giving a feasible plan
@@ -321,6 +413,12 @@ path themselves, and no network access is needed. The latest run reported
   - a case where the time windows fix the visiting order, optimum 4 km;
   - a case where only the end of the shift keeps two customers on separate
     routes, optimum 40 km;
+- independent raw-coordinate auditing, malformed/falsified objective claims,
+  exhaustive empty/infeasible instances and a six-customer size guard;
+- full C101 provenance, importer assumptions, independent published-route
+  validation and deterministic, feasible output from all six variants;
+- non-finite direct dataclass input, derived geometry overflow, and zero or
+  invalid local-search move budgets;
 - the departure time in the timeline: the latest one that keeps every stop
   on time and the return unchanged;
 - scenario and solution JSON round trips, and checking a file that holds
@@ -342,10 +440,15 @@ src/vrptw/
   local_search.py  2-opt, relocate and exchange improvement
   solution.py      solution type, evaluation and timelines, solution JSON
   planner.py       solve(): construction plus optional local search
+  validation.py    independent raw-data route audit and tiny exhaustive reference
+  benchmark.py     strict Solomon instance importer
   report.py        text report
   cli.py           argument parsing for generate / solve / check / compare
 tests/             unittest suite (support.py holds shared helpers)
 examples/          three generated scenarios
+benchmarks/        official C101 fixture, provenance/reference, one measured JSON/CSV run
+scripts/           standalone independent checker and offline benchmark demo
+.github/workflows/ Ubuntu/Windows tests and benchmark reports
 ```
 
 ## Limitations
@@ -359,8 +462,9 @@ examples/          three generated scenarios
 - The savings solver can return more routes than there are vehicles. The
   plan is then marked infeasible rather than repaired.
 - Local search scans each neighbourhood exhaustively and restarts after
-  every move. It has not been tuned or measured on large instances. The
-  largest scenarios used during development had 100 customers.
+  every move. Only one recognized 100-customer instance is measured here;
+  it has not been tuned for large instances. The move budget does not bound
+  the time spent scanning a neighbourhood.
 
 ## References
 

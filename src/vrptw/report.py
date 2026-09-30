@@ -11,8 +11,9 @@ def format_report(
 ) -> str:
     f = scenario.fleet
     method = solution.solver or "unknown"
-    if solution.options:
-        method += " (" + ", ".join(f"{k}={v}" for k, v in solution.options.items()) + ")"
+    construction_options = {k: v for k, v in solution.options.items() if k != "max_moves"}
+    if construction_options:
+        method += " (" + ", ".join(f"{k}={v}" for k, v in construction_options.items()) + ")"
     if solution.improved:
         method += " + local search"
     lines = [
@@ -34,6 +35,9 @@ def format_report(
             f"Search     moves applied: {sum(moves.values())} ({detail}); "
             f"{s.get('start_distance', 0):.2f} -> {s.get('end_distance', 0):.2f} km"
         )
+        if s.get("stopped_early"):
+            lines.append(f"Search     accepted-move budget exhausted ({solution.options.get('max_moves', 'unknown')}); "
+                         "local search stopped before checking every neighbourhood")
     for v in ev.violations:
         lines.append(f"  violation: {v}")
 

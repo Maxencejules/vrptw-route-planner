@@ -1,0 +1,35 @@
+name: Route validation
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit and independent reference tests
+        run: python -m unittest discover -s tests -v
+      - name: Offline C101 benchmark and independent audit
+        run: python scripts/benchmark.py --out build/benchmark --max-moves 1000
+      - name: Standalone solver and audit CLI smoke
+        env:
+          PYTHONPATH: src
+        run: |
+          python -m vrptw solve --scenario examples/uniform-20.json --solver nearest --improve --json build/plan.json --no-timeline
+          python scripts/validate_solution.py --scenario examples/uniform-20.json --solution build/plan.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: route-proof-${{ matrix.os }}
+          path: build/benchmark/
